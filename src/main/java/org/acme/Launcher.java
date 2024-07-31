@@ -51,7 +51,7 @@ public class Launcher implements Runnable {
 
             Section root = new Section("Global", null);
             readNode(node, root);
-            chart.setSections(List.of(root));
+            chart.sections().add(root);
             try (FileWriter writer = new FileWriter(outputFilePath)) {
                 writer.write(chartTemplate.data(chart).render());
             }
