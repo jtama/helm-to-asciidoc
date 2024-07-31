@@ -1,0 +1,19 @@
+{@org.acme.Chart chart}
+= {name}
+
+{description}
+
+[horizontal]
+Type:: {type}
+Version:: {version}
+Application version:: {appVersion}
+
+{#include dependencies.adoc dependencies=dependencies/}
+
+== Chart values
+
+{#for section in sections}
+
+{#include section.adoc level='===' section=section /}
+
+{/for}
