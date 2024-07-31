@@ -1,0 +1,18 @@
+{#if dependencies != null && dependencies.size() > 1}
+== Dependencies
+
+Here are the chart dependencies :
+
+[%autowidth, stripes=even]
+|===
+|Name |Repository | Version| Condition
+
+{#for dependency in dependencies}
+a|`{dependency.name()}`
+|{dependency.repository()}
+|{dependency.version()}
+a|`{dependency.condition()}`
+
+{/for}
+|===
+{/if}

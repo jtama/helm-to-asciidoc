@@ -1,0 +1,29 @@
+{@java.lang.String level}
+{@org.acme.Section section}
+{#when level.length}
+    {#is > 5}
+===== {section.name}
+    {#else}
+{level + " " + section.name}
+{/when}
+
+{section.description}
+
+{#if section.properties.size() > 1}
+|===
+| Name | Description | Default value
+
+{#for property in section.properties}
+a| `{property.name()}`
+| {property.description()}
+a| {property.defaultValue()}
+
+{/for}
+|===
+{/if}
+
+{#for child in section.childs}
+
+{#include section.adoc level=(level + '=')  section=child /}
+
+{/for}
