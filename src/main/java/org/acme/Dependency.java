@@ -10,11 +10,6 @@ public record Dependency(String name, String repository, String version, String 
         condition = Objects.requireNonNullElse(condition, "N/A");
     }
 
-    @Override
-    public String toString() {
-        return getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(this));
-    }
-
     public static final class Builder {
         private String name;
 
@@ -43,13 +38,12 @@ public record Dependency(String name, String repository, String version, String 
         }
 
         public Builder setCondition(String condition) {
-            this.condition = Objects.requireNonNull(condition, "Null condition");
+            this.condition = condition == null || condition.isBlank() ? null : condition;
             return this;
         }
 
         public Dependency build() {
-            if (this.name == null || this.repository == null || this.version == null ||
-                    this.condition == null) {
+            if (this.name == null || this.repository == null || this.version == null) {
                 StringBuilder missing = new StringBuilder();
                 if (this.name == null) {
                     missing.append(" name");
@@ -59,9 +53,6 @@ public record Dependency(String name, String repository, String version, String 
                 }
                 if (this.version == null) {
                     missing.append(" version");
-                }
-                if (this.condition == null) {
-                    missing.append(" condition");
                 }
                 throw new IllegalStateException("Missing required properties:" + missing);
             }
