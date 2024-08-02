@@ -7,7 +7,7 @@ public record Dependency(String name, String repository, String version, String 
         Objects.requireNonNull(name, "property :name is required");
         Objects.requireNonNull(repository, "property :repository is required");
         Objects.requireNonNull(version, "property :version is required");
-        Objects.requireNonNull(condition, "property :condition is required");
+        condition = Objects.requireNonNullElse(condition, "N/A");
     }
 
     @Override
