@@ -1,18 +1,28 @@
-{#if dependencies != null && dependencies.size() > 1}
-== Dependencies
-
-Here are the chart dependencies :
-
-[%autowidth, stripes=even]
-|===
-|Name |Repository | Version| Condition
-
+{#if dependencies.size() > 0}
+*dependencies* :
 {#for dependency in dependencies}
-a|`{dependency.name()}`
-|{dependency.repository()}
-|{dependency.version()}
-a|`{dependency.condition()}`
-
+\{nbsp\} - *name* : {dependency.name}
+\{nbsp\}\{nbsp\}\{nbsp\} *version* : {dependency.version}
+    {#if dependency.repository != null}
+\{nbsp\}\{nbsp\}\{nbsp\} *repository* :  {dependency.repository}
+    {/if}
+    {#if dependency.condition != null}
+\{nbsp\}\{nbsp\}\{nbsp\} *condition* : {dependency.condition}
+    {/if}
+    {#if dependency.tags.size > 0}
+\{nbsp\}\{nbsp\}\{nbsp\} *tags*:
+        {#for tag in dependency.tags}
+\{nbsp\}\{nbsp\}\{nbsp\}\{nbsp\}\{nbsp\}\{nbsp\} - {tag}
+        {/for}
+    {/if}
+    {#if dependency.importValues.size > 0}
+\{nbsp\}\{nbsp\}\{nbsp\} *import-values* :
+        {#for importValue in dependency.importValues}
+\{nbsp\}\{nbsp\}\{nbsp\}\{nbsp\}\{nbsp\}\{nbsp\} - {importValue}
+        {/for}
+    {/if}
+    {#if dependency.alias != null}
+\{nbsp\}\{nbsp\}\{nbsp\} *alias*: {dependency.alias}
+    {/if}
 {/for}
-|===
 {/if}

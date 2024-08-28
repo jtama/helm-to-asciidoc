@@ -1,14 +1,56 @@
-{@org.acme.Chart chart}
+{@com.github.jtama.Chart chart}
 = {name}
+:hardbreaks-option:
 
 {description}
 
-[horizontal]
-Type:: {type}
-Version:: {version}
-Application version:: {appVersion}
+== Identity card
 
+[horizontal]
+
+*apiVersion*: {apiVersion}
+*version*: {version}
+{#if kubeVersion != null}
+*kubeVersion*: {kubeVersion}
+{/if}
+{#if type != null}
+*type*: {type}
+{/if}
+{#if keywords.size() > 0}
+*keywords* :
+{#for keyword in keywords}
+\{nbsp\} - {keyword}
+{/for}
+{/if}
+{#if home != null}
+*home*: {home}
+{/if}
+{#if sources.size() > 0}
+*sources* :
+{#for source in sources}
+* {source}
+{/for}
+{/if}
 {#include dependencies.adoc dependencies=dependencies/}
+{#if maintainers.size() > 0}
+*maintainers*:
+{#for maintainer in maintainers}
+\{nbsp\} - {maintainer.name} {#if maintainer.email != null}, {maintainer.email}{/if}{#if maintainer.url != null}, {maintainer.url}{/if}
+{/for}
+{/if}
+{#if icon != null}
+*icon*: image:{icon}[width=48]
+{/if}
+{#if appVersion != null}
+*appVersion*: {appVersion}
+{/if}
+*deprecated*: {deprecated}
+{#if maintainers.size() > 0}
+*annotations* :
+{#for annotation in annotations}
+\{nbsp\} - {annotation.key}:  {annotation.value ?: ''}
+{/for}
+{/if}
 
 == Chart values
 
