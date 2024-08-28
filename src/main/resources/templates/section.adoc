@@ -1,5 +1,5 @@
 {@java.lang.String level}
-{@org.acme.Section section}
+{@com.github.jtama.Section section}
 {#when level.length}
     {#is > 5}
 ===== {section.name}
@@ -8,22 +8,23 @@
 {/when}
 
 {section.description}
-
-{#if section.properties.size() > 1}
+{#if section.properties.size() > 0}
 |===
-| Name | Description | Default value
+| Name | Description | Default value | Line number
 
 {#for property in section.properties}
-a| `{property.name()}`
+a| {property.name()}
 | {property.description()}
-a| {property.defaultValue()}
+a|
+----
+ {property.defaultValue()}
+----
+| {property.lineNumber()}
 
 {/for}
 |===
 {/if}
-
 {#for child in section.childs}
 
 {#include section.adoc level=(level + '=')  section=child /}
-
 {/for}
