@@ -1,0 +1,56 @@
+= helm-to-asciidoc
+
+This projects aims to generate _asciidoc_ documentation from _Helm chart file_.
+It combines _Chart.yaml_ and their values files to generate them.
+
+This project uses _Quarkus_, the Supersonic Subatomic Java Framework.
+
+If you want to learn more about _Quarkus_, please visit its website: https://quarkus.io/ .
+
+More specifically it uses _Quarkus Qute_ and _Picocli_ extensions
+
+== Running the application in dev mode
+
+You can run your application in dev mode that enables live coding using:
+
+[source,shell]
+---
+./mvnw compile quarkus:dev -Dquarkus.args="-h"
+---
+
+== Packaging and running the application
+
+The application can be packaged using:
+
+```shell script
+./mvnw package
+```
+
+It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+
+The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar -Dquarkus.args="-h"`.
+
+== Creating a native executable
+
+You can create a native executable using:
+
+```shell script
+./mvnw package -Dnative
+```
+
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+
+```shell script
+./mvnw package -Dnative -Dquarkus.native.container-build=true
+```
+
+You can then execute your native executable with: `./target/helm-to-asciidoc-1.0.0-SNAPSHOT-runner -Dquarkus.args="-h"`
+
+== WARNING
+
+This project is still in its early stage.
+
+Contributions are always welcome, but this repository is not really ready for external contributions yet, better create an issue to discuss them prior to any contributions.
+
+
