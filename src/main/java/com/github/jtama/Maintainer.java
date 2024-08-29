@@ -1,10 +1,13 @@
 package com.github.jtama;
 
+import io.quarkus.qute.TemplateData;
+
 import static com.github.jtama.utils.StringUtils.stripToNull;
 
 import java.net.URL;
 import java.util.Objects;
 
+@TemplateData
 public record Maintainer(String name, String email, URL url) {
 
     public Maintainer {
