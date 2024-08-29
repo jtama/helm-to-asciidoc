@@ -78,9 +78,9 @@ public class ValuesFileMapper {
             return null;
         }
         return switch (nodes.getFirst()) {
-            case ScalarNode _ -> getScalarDefaultValues((List<ScalarNode>) nodes);
-            case SequenceNode _ -> getSequenceDefaultValues((List<SequenceNode>) nodes);
-            case MappingNode _ -> getMappingDefaultValues((List<MappingNode>) nodes);
+            case ScalarNode ignored -> getScalarDefaultValues((List<ScalarNode>) nodes);
+            case SequenceNode ignored -> getSequenceDefaultValues((List<SequenceNode>) nodes);
+            case MappingNode ignored -> getMappingDefaultValues((List<MappingNode>) nodes);
             default -> throw new IllegalStateException("Unexpected value: " + nodes.getFirst());
         };
     }

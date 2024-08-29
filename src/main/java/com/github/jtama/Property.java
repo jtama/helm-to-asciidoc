@@ -3,7 +3,9 @@ package com.github.jtama;
 import java.util.Objects;
 
 import com.github.jtama.utils.StringUtils;
+import io.quarkus.qute.TemplateData;
 
+@TemplateData
 public record Property(String name, String description, String defaultValue, int lineNumber) {
     public Property {
         if (defaultValue != null) {

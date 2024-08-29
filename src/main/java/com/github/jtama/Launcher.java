@@ -24,13 +24,13 @@ import picocli.CommandLine;
 @CommandLine.Command(mixinStandardHelpOptions = true)
 public class Launcher implements Runnable {
 
-    @CommandLine.Option(names = { "-c", "--chart" }, description = "The chart file path")
+    @CommandLine.Option(names = { "-c", "--chart" }, required = true, description = "The chart file path")
     String chartFilePath;
 
-    @CommandLine.Option(names = { "-v", "--values" }, description = "The values file path")
+    @CommandLine.Option(names = { "-v", "--values" }, required = true, description = "The values file path")
     String valuesFilePath;
 
-    @CommandLine.Option(names = { "-o", "--output" }, description = "The output result file path")
+    @CommandLine.Option(names = { "-o", "--output" }, defaultValue = "output.adoc", description = "The output result file path")
     String outputFilePath;
 
     @CommandLine.Option(names = { "-cp",
