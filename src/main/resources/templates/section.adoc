@@ -8,6 +8,7 @@
 {/when}
 
 {section.description}
+
 {#if section.properties.size() > 0}
 |===
 | Name | Description | Default value | Line number
