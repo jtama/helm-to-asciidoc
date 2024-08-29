@@ -6,8 +6,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
+import io.quarkus.qute.TemplateData;
 import jakarta.annotation.Nullable;
 
+@TemplateData
 public record Chart(String apiVersion,
         String name,
         String version,

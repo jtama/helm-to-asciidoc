@@ -3,10 +3,12 @@ package com.github.jtama;
 import java.util.List;
 import java.util.Objects;
 
+import io.quarkus.qute.TemplateData;
 import jakarta.annotation.Nullable;
 
 import com.github.jtama.utils.StringUtils;
 
+@TemplateData
 public record Dependency(String name,
         String version,
         @Nullable String repository,
