@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.jtama</groupId>
     <artifactId>helm-to-asciidoc</artifactId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.1.2</version>
     <url>https://github.com/jtama/chart-to-asciidoc</url>
     <name>Helm to asciidoc generator</name>
     <description>Allow generating asciidoc documentation based on Helm Chart and Values files.</description>
