@@ -7,7 +7,26 @@ This project uses _Quarkus_, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about _Quarkus_, please visit its website: https://quarkus.io/ .
 
-More specifically it uses _Quarkus Qute_ and _Picocli_ extensions
+More specifically it uses _Quarkus Qute_ and _Picocli_ extensions.
+
+== Command line references
+
+[source, sh]
+----
+  -c, --chart=<chartFilePath>
+                  The chart file path
+  -cp, --comment-prefix=<commentPrefix>
+                  The comment prefix used in the values path
+  -h, --help      Show this help message and exit.
+  -o, --output=<outputFilePath>
+                  The output result file path
+  -v, --values=<valuesFilePath>
+                  The values file path
+  -V, --version   Print version information and exit.
+----
+
+Any line starting with the comment prefix will be considered a description of the following values file entry. Any other `YAML` comment will be ignored.
+
 
 == Running the application in dev mode
 

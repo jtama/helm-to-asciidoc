@@ -3,6 +3,7 @@ package com.github.jtama.utils;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.UUID;
 
 public final class StringUtils {
 
@@ -24,5 +25,9 @@ public final class StringUtils {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String formattedUUID(UUID uuid) {
+        return uuid != null ? "_" + uuid : null;
     }
 }
