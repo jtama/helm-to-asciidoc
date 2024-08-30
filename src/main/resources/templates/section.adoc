@@ -1,31 +1,36 @@
 {@java.lang.String level}
 {@com.github.jtama.Section section}
-{#when level.length}
+[#{section.formattedID()}]
+{#when level.length()}
     {#is > 5}
-===== {section.name}
+===== {section.name()}
     {#else}
-{level + " " + section.name}
+{level + " " + section.name()}
 {/when}
 
 {section.description}
 
-{#if section.properties.size() > 0}
+{#if section.properties().size() > 0}
 |===
 | Name | Description | Default value | Line number
 
-{#for property in section.properties}
+{#for property in section.properties()}
 a| {property.name()}
 | {property.description()}
 a|
+{#if property.isObject()}
+<<{property.formattedID()},{property.name()}>>
+{#else}
 ----
  {property.defaultValue()}
 ----
+{/if}
 | {property.lineNumber()}
 
 {/for}
 |===
 {/if}
-{#for child in section.childs}
+{#for child in section.childs()}
 
 {#include section.adoc level=(level + '=')  section=child /}
 {/for}

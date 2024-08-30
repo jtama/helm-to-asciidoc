@@ -2,6 +2,7 @@ package com.github.jtama;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.yaml.snakeyaml.comments.CommentLine;
 import org.yaml.snakeyaml.nodes.MappingNode;
@@ -43,20 +44,28 @@ public class ValuesFileMapper {
                         Node valueNode = tuple.getValueNode();
                         switch (valueNode) {
                             case ScalarNode value ->
-                                section.properties().add(new Property(key.getValue(), getBlockComments(key.getBlockComments()),
-                                        value.getValue(), value.getStartMark().getLine()));
+                                    section.properties().add(new Property(key.getValue(), getBlockComments(key.getBlockComments()),
+                                            value.getValue(), value.getStartMark().getLine()));
                             case SequenceNode value ->
-                                section.properties().add(new Property(key.getValue(), getBlockComments(key.getBlockComments()),
-                                        getDefaultValues(value.getValue()), value.getStartMark().getLine()));
+                                    section.properties().add(new Property(key.getValue(), getBlockComments(key.getBlockComments()),
+                                            getDefaultValues(value.getValue()), value.getStartMark().getLine()));
                             case MappingNode value -> {
+                                Property property = new Property(key.getValue(),
+                                        getBlockComments(key.getBlockComments()),
+                                        "{}",
+                                        UUID.randomUUID(),
+                                        !value.getValue().isEmpty(),
+                                        value.getStartMark().getLine());
+                                section.properties().add(property);
                                 if (value.getValue().isEmpty()) {
-                                    section.properties().add(new Property(key.getValue(),
-                                            getBlockComments(key.getBlockComments()), "{}", value.getStartMark().getLine()));
                                     return;
                                 }
                                 String childName = isFirstSection(section) ? key.getValue()
                                         : section.name() + '.' + key.getValue();
-                                Section childSection = new Section(childName, getBlockComments(key.getBlockComments()));
+                                Section childSection = new Section.Builder()
+                                        .setName(childName)
+                                        .setDescription(getBlockComments(key.getBlockComments()))
+                                        .setUUID(property.uuid()).build();
                                 readNode(value, childSection);
                                 section.childs().add(childSection);
                             }
