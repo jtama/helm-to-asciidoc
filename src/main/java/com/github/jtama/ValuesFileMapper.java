@@ -1,13 +1,15 @@
 package com.github.jtama;
 
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Objects;
 
 import org.yaml.snakeyaml.comments.CommentLine;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
+
+import com.github.jtama.utils.StringUtils;
 
 public class ValuesFileMapper {
 
@@ -19,7 +21,9 @@ public class ValuesFileMapper {
     }
 
     public Section readValues(Node node) {
-        Section root = new Section(FIRST_SECTION_KEY, null);
+        Section root = new Section.Builder()
+                .setName(FIRST_SECTION_KEY)
+                .build();
         readNode(node, root);
         return root;
     }
@@ -69,8 +73,8 @@ public class ValuesFileMapper {
 
     private String getBlockComments(List<CommentLine> lines) {
         return lines == null ? ""
-                : String.join(" + " + System.lineSeparator() + System.lineSeparator(), lines.stream().map(CommentLine::getValue)
-                        .map(this::cleanComment).filter(Predicate.not(String::isBlank)).toList());
+                : String.join(" + " + System.lineSeparator(), lines.stream().map(CommentLine::getValue)
+                        .map(comment -> cleanComment(StringUtils.stripToNull(comment))).filter(Objects::nonNull).toList());
     }
 
     private String getDefaultValues(List<?> nodes) {
@@ -100,8 +104,9 @@ public class ValuesFileMapper {
     }
 
     private String cleanComment(String comment) {
-        if (!comment.startsWith(commentPrefix))
-            return comment;
-        return comment.substring(commentPrefix.length()).replaceAll("\\|", "\\\\|").strip();
+        if (comment == null || !comment.startsWith(commentPrefix))
+            return null;
+
+        return comment.substring(commentPrefix.length()).replaceAll("\\|", "\\\\|");
     }
 }
