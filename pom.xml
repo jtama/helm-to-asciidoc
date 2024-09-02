@@ -267,7 +267,7 @@
                                                 <path>
                                                     {{artifactsDir}}/{{distributionName}}-{{projectVersion}}-osx-aarch_64.zip
                                                 </path>
-                                                <platform>osx-aarch</platform>
+                                                <platform>osx-aarch_64</platform>
                                             </artifact>
                                         </artifacts>
                                     </helm-to-asciidoc>

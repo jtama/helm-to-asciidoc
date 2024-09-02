@@ -19,6 +19,7 @@ jobs:
   precheck:
     runs-on: ubuntu-latest
     outputs:
+      HEAD: ${{ steps.version.outputs.HEAD }}
       NEXT_VERSION: ${{ steps.version.outputs.NEXT_VERSION }}
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
@@ -68,6 +69,8 @@ jobs:
     steps:
       - name: 'Check out repository'
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          ref: ${{ needs.precheck.outputs.HEAD }}
 
       - name: 'Set up Graal'
         uses: graalvm/setup-graalvm@v1.2.2
@@ -112,12 +115,13 @@ jobs:
 
   # Collect all executables and release
   release:
-    needs: [ merge ]
+    needs: [ precheck, merge ]
     runs-on: ubuntu-latest
     steps:
       - name: 'Check out repository'
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
+          ref: ${{ needs.precheck.outputs.HEAD }}
           fetch-depth: 0
 
       - name: 'Download all build artifacts'
