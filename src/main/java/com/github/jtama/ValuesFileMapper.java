@@ -1,9 +1,11 @@
 package com.github.jtama;
 
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.comments.CommentLine;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
@@ -15,10 +17,12 @@ import com.github.jtama.utils.StringUtils;
 public class ValuesFileMapper {
 
     public static final String FIRST_SECTION_KEY = "Global";
+    private final Yaml yaml;
     private String commentPrefix;
 
     public ValuesFileMapper(String commentPrefix) {
         this.commentPrefix = commentPrefix;
+        this.yaml = new Yaml();
     }
 
     public Section readValues(Node node) {
@@ -37,18 +41,18 @@ public class ValuesFileMapper {
             case SequenceNode sequence ->
                 section.properties()
                         .add(new Property(sequence.getNodeId().name(), getBlockComments(sequence.getBlockComments()),
-                                getDefaultValues(sequence.getValue()), sequence.getStartMark().getLine()));
+                                getDefaultValues(sequence), sequence.getStartMark().getLine()));
             case MappingNode sequence -> sequence.getValue().stream()
                     .forEach(tuple -> {
                         ScalarNode key = (ScalarNode) tuple.getKeyNode();
                         Node valueNode = tuple.getValueNode();
                         switch (valueNode) {
                             case ScalarNode value ->
-                                    section.properties().add(new Property(key.getValue(), getBlockComments(key.getBlockComments()),
-                                            value.getValue(), value.getStartMark().getLine()));
+                                section.properties().add(new Property(key.getValue(), getBlockComments(key.getBlockComments()),
+                                        value.getValue(), value.getStartMark().getLine()));
                             case SequenceNode value ->
-                                    section.properties().add(new Property(key.getValue(), getBlockComments(key.getBlockComments()),
-                                            getDefaultValues(value.getValue()), value.getStartMark().getLine()));
+                                section.properties().add(new Property(key.getValue(), getBlockComments(key.getBlockComments()),
+                                        getDefaultValues(value), value.getStartMark().getLine()));
                             case MappingNode value -> {
                                 Property property = new Property(key.getValue(),
                                         getBlockComments(key.getBlockComments()),
@@ -83,39 +87,20 @@ public class ValuesFileMapper {
     private String getBlockComments(List<CommentLine> lines) {
         return lines == null ? ""
                 : String.join(" + " + System.lineSeparator(), lines.stream().map(CommentLine::getValue)
-                        .map(comment -> cleanComment(StringUtils.stripToNull(comment))).filter(Objects::nonNull).toList());
+                        .map(comment -> cleanComment(comment))
+                        .filter(Objects::nonNull).toList());
     }
 
-    private String getDefaultValues(List<?> nodes) {
-        if (nodes == null || nodes.isEmpty()) {
-            return null;
-        }
-        return switch (nodes.getFirst()) {
-            case ScalarNode ignored -> getScalarDefaultValues((List<ScalarNode>) nodes);
-            case SequenceNode ignored -> getSequenceDefaultValues((List<SequenceNode>) nodes);
-            case MappingNode ignored -> getMappingDefaultValues((List<MappingNode>) nodes);
-            default -> throw new IllegalStateException("Unexpected value: " + nodes.getFirst());
-        };
-    }
-
-    private String getScalarDefaultValues(List<ScalarNode> nodes) {
-        return String.join(System.lineSeparator(), nodes.stream().map(ScalarNode::getValue).map(value -> "-" + value).toList());
-    }
-
-    private String getSequenceDefaultValues(List<SequenceNode> nodes) {
-        return String.join(System.lineSeparator(),
-                nodes.stream().map(SequenceNode::getValue).map(value -> "-" + value).toList());
-    }
-
-    private String getMappingDefaultValues(List<MappingNode> nodes) {
-        return String.join(System.lineSeparator(), nodes.stream().map(MappingNode::getValue).flatMap(List::stream)
-                .map(value -> "-" + ((ScalarNode) value.getKeyNode()).getValue()).toList());
+    private String getDefaultValues(Node node) {
+        StringWriter stringWriter = new StringWriter();
+        yaml.serialize(node, stringWriter);
+        return stringWriter.toString();
     }
 
     private String cleanComment(String comment) {
         if (comment == null || !comment.startsWith(commentPrefix))
             return null;
 
-        return comment.substring(commentPrefix.length()).replaceAll("\\|", "\\\\|");
+        return StringUtils.stripToNull(comment.substring(commentPrefix.length()).replaceAll("\\|", "\\\\|"));
     }
 }
