@@ -15,6 +15,9 @@ public record Property(String name, @Nullable String description, @Nullable Stri
     public Property {
         Objects.requireNonNull(name, "property :name is required");
         Objects.requireNonNull(isObject, "property :isObject is required");
+        if(defaultValue != null) {
+            defaultValue = defaultValue.replaceAll("\\|", "\\\\|").strip();
+        }
     }
 
     public Property(String name, @Nullable String description, @Nullable UUID uuid, int lineNumber) {
