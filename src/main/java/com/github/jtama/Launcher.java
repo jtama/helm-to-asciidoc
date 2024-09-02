@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Stack;
 
 import jakarta.inject.Inject;
@@ -37,6 +39,10 @@ public class Launcher implements Runnable {
             "--comment-prefix" }, description = "The comment prefix used in the values path", defaultValue = "#", parameterConsumer = Launcher.PrefixConsumer.class)
     String commentPrefix;
 
+    @CommandLine.Option(names = { "-i",
+            "--include-raw" }, description = "Whether or not the raw value file should be included as reference", defaultValue = "false")
+    Boolean includeValuesFile;
+
     @Location("chart.adoc")
     Template chartTemplate;
 
@@ -62,7 +68,14 @@ public class Launcher implements Runnable {
             Section root = new ValuesFileMapper(commentPrefix).readValues(node);
             Chart chart = readChart(new File(chartFilePath), root);
             try (FileWriter writer = new FileWriter(outputFilePath)) {
-                writer.write(chartTemplate.data(chart).render());
+                if (includeValuesFile) {
+                    writer.write(chartTemplate.data("chart", chart,
+                            "includeRaw", includeValuesFile,
+                            "valuesFileName", yamlFile.getName(),
+                            "valuesFileContent", Files.readString(Path.of(valuesFilePath))).render());
+                } else {
+                    writer.write(chartTemplate.data("chart", chart).render());
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
