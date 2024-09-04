@@ -21,7 +21,7 @@ a| {property.name()}
 a|
 {#if property.isObject()}
 <<{property.formattedID()},{property.name()}>>
-{#else}
+{#else if property.hasDefaultValue()}
 [source]
 ----
 {property.defaultValue()}

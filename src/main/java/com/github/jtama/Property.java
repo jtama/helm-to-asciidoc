@@ -16,7 +16,7 @@ public record Property(String name, @Nullable String description, @Nullable Stri
         Objects.requireNonNull(name, "property :name is required");
         Objects.requireNonNull(isObject, "property :isObject is required");
         if(defaultValue != null) {
-            defaultValue = defaultValue.replaceAll("\\|", "\\\\|").strip();
+            defaultValue = StringUtils.stripToNull(defaultValue.replaceAll("\\|", "\\\\|"));
         }
     }
 
@@ -30,5 +30,9 @@ public record Property(String name, @Nullable String description, @Nullable Stri
 
     public String formattedID() {
         return StringUtils.formattedUUID(uuid);
+    }
+
+    public boolean hasDefaultValue() {
+        return defaultValue != null;
     }
 }
