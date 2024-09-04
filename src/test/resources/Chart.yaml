@@ -1,0 +1,10 @@
+apiVersion: v1
+name: Foo Fighters
+version: 1.0.0
+maintainers:
+  - name: Dave Grohl
+home: https://foofighters.com
+keywords:
+  - GOAT
+  - Alternative rock
+description: "*Foo Fighters* is an american rock band formed in Seattle in 1994."

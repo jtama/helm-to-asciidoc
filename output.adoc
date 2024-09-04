@@ -1,0 +1,222 @@
+= Foo Fighters
+:hardbreaks-option:
+
+*Foo Fighters* is an american rock band formed in Seattle in 1994.
+
+== Identity card
+
+[horizontal]
+
+*apiVersion*: v1
+*version*: 1.0.0
+*keywords* :
+{nbsp} - GOAT
+{nbsp} - Alternative rock
+*home*: https://foofighters.com
+*maintainers*:
+{nbsp} - Dave Grohl 
+*deprecated*: false
+
+== Chart values
+
+
+[#_8693bca4-ee0c-4e42-b8b5-02ba5e6aa42c]
+=== Global
+
+
+
+[.stripes-even, cols="2,4,4,1"]
+|===
+| Name | Description | Default value | Line number
+
+a| foo
+| Wouaouh!
+a|
+[source]
+----
+fighter
+----
+| 1
+
+a| band
+| 
+a|
+<<_6074796a-95d8-4159-b0e0-0ae562d8f5ab,band>>
+| 3
+
+|===
+
+[#_6074796a-95d8-4159-b0e0-0ae562d8f5ab]
+==== band
+
+
+
+[.stripes-even, cols="2,4,4,1"]
+|===
+| Name | Description | Default value | Line number
+
+a| members
+| 
+a|
+<<_b461a3ad-4db7-494e-bb4c-40d7dfd973d7,members>>
+| 5
+
+|===
+
+[#_b461a3ad-4db7-494e-bb4c-40d7dfd973d7]
+===== band.members
+
+
+
+[.stripes-even, cols="2,4,4,1"]
+|===
+| Name | Description | Default value | Line number
+
+a| dave grohl
+| Who can honnestly say he is better than him ?
+a|
+<<_8fcee947-859c-4a23-b816-b8e5de5eaa34,dave grohl>>
+| 6
+
+a| Nate Mendel
+| 
+a|
+<<_0529d108-0320-4f04-a680-2908ff6dd585,Nate Mendel>>
+| 13
+
+a| Pat Smear
+| 
+a|
+<<_9f738141-dd6d-4ac3-9efd-2e317f3503a7,Pat Smear>>
+| 17
+
+a| Taylor Hawkins
+| Rest in peace
+a|
+<<_4c664387-bf11-41e7-a4fd-8c91499a3293,Taylor Hawkins>>
+| 22
+
+|===
+
+[#_8fcee947-859c-4a23-b816-b8e5de5eaa34]
+===== band.members.dave grohl
+
+Who can honnestly say he is better than him ?
+
+[.stripes-even, cols="2,4,4,1"]
+|===
+| Name | Description | Default value | Line number
+
+a| active
+| 
+a|
+[source]
+----
+1994-present
+----
+| 6
+
+a| instrument
+| 
+a|
+[source]
+----
+- lead vocals
+- guitar
+- bass
+- drum
+----
+| 8
+
+|===
+
+[#_0529d108-0320-4f04-a680-2908ff6dd585]
+===== band.members.Nate Mendel
+
+
+
+[.stripes-even, cols="2,4,4,1"]
+|===
+| Name | Description | Default value | Line number
+
+a| active
+| 
+a|
+[source]
+----
+1995-present
+----
+| 13
+
+a| instrument
+| 
+a|
+[source]
+----
+- bass
+----
+| 15
+
+|===
+
+[#_9f738141-dd6d-4ac3-9efd-2e317f3503a7]
+===== band.members.Pat Smear
+
+
+
+[.stripes-even, cols="2,4,4,1"]
+|===
+| Name | Description | Default value | Line number
+
+a| active
+| 
+a|
+[source]
+----
+1995-present
+----
+| 17
+
+a| instrument
+| 
+a|
+[source]
+----
+- guitar
+----
+| 19
+
+|===
+
+[#_4c664387-bf11-41e7-a4fd-8c91499a3293]
+===== band.members.Taylor Hawkins
+
+Rest in peace
+
+[.stripes-even, cols="2,4,4,1"]
+|===
+| Name | Description | Default value | Line number
+
+a| active
+| 
+a|
+[source]
+----
+1997-2002
+----
+| 22
+
+a| instrument
+| 
+a|
+[source]
+----
+- percussion
+- drum
+- backing vocals
+----
+| 24
+
+|===
+
+

@@ -1,0 +1,27 @@
+## Wouaouh!
+foo: fighter
+band:
+  members:
+    ## Who can honnestly say he is better than him ?
+    dave grohl:
+      active: 1994-present
+      instrument:
+        - lead vocals
+        - guitar
+        - bass
+        - drum
+    Nate Mendel:
+      active: 1995-present
+      instrument:
+        - bass
+    Pat Smear:
+      active: 1995-present
+      instrument:
+        - guitar
+    ## Rest in peace
+    Taylor Hawkins:
+      active: 1997-2002
+      instrument:
+        - percussion
+        - drum
+        - backing vocals
