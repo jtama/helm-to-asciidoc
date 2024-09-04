@@ -12,10 +12,14 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 import com.github.jtama.utils.StringUtils;
+import picocli.CommandLine;
 
 public class ChartMapper {
 
     public static Chart mapToChart(MappingNode rootNode, Section rootSection) {
+        if (rootNode == null) {
+            throw new CommandLine.PicocliException("Chart file is empty.");
+        }
         Chart.Builder builder = new Chart.Builder();
         rootNode.getValue().forEach(tuple -> {
             switch (tuple.getKeyNode()) {

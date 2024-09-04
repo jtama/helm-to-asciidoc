@@ -62,11 +62,18 @@ public class Launcher implements Runnable {
 
         Yaml yaml = new Yaml(loaderOptions);
         File yamlFile = new File(valuesFilePath);
+        if(!yamlFile.exists()) {
+            throw new CommandLine.PicocliException("Values file could not be found : %s".formatted(valuesFilePath));
+        }
         try (FileReader reader = new FileReader(yamlFile)) {
             Node node = yaml.compose(reader);
 
             Section root = new ValuesFileMapper(commentPrefix).readValues(node);
             Chart chart = readChart(new File(chartFilePath), root);
+            File ouptFile = new File(outputFilePath);
+            if (!ouptFile.exists() && !ouptFile.createNewFile()) {
+                throw new CommandLine.PicocliException("Couldn't create new file");
+            }
             try (FileWriter writer = new FileWriter(outputFilePath)) {
                 if (includeValuesFile) {
                     writer.write(chartTemplate.data("chart", chart,
@@ -74,7 +81,7 @@ public class Launcher implements Runnable {
                             "valuesFileName", yamlFile.getName(),
                             "valuesFileContent", Files.readString(Path.of(valuesFilePath))).render());
                 } else {
-                    writer.write(chartTemplate.data("chart", chart).render());
+                    writer.write(chartTemplate.data("chart", chart,"includeRaw", includeValuesFile).render());
                 }
             }
         } catch (IOException e) {

@@ -13,6 +13,7 @@ import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
 
 import com.github.jtama.utils.StringUtils;
+import picocli.CommandLine;
 
 public class ValuesFileMapper {
 
@@ -29,6 +30,9 @@ public class ValuesFileMapper {
         Section root = new Section.Builder()
                 .setName(FIRST_SECTION_KEY)
                 .build();
+        if (node == null) {
+            throw new CommandLine.PicocliException("Values file is empty.");
+        }
         readNode(node, root);
         return root;
     }
