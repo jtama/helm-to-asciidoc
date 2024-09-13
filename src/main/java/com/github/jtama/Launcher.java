@@ -10,8 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Stack;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 
+import io.quarkus.picocli.runtime.PicocliCommandLineFactory;
 import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
 
@@ -57,13 +60,18 @@ public class Launcher implements Runnable {
         log.infof("Output file : %s", outputFilePath);
         log.infof("Comment prefix : %s", commentPrefix);
 
+        process();
+
+    }
+
+    private void process() {
         LoaderOptions loaderOptions = new LoaderOptions();
         loaderOptions.setProcessComments(true);
 
         Yaml yaml = new Yaml(loaderOptions);
         File yamlFile = new File(valuesFilePath);
-        if(!yamlFile.exists()) {
-            throw new CommandLine.PicocliException("Values file could not be found : %s".formatted(valuesFilePath));
+        if (!yamlFile.exists()) {
+            throw new CommandLine.PicocliException("Values file could not be found: %s".formatted(yamlFile.getAbsolutePath()));
         }
         try (FileReader reader = new FileReader(yamlFile)) {
             Node node = yaml.compose(reader);
@@ -72,7 +80,7 @@ public class Launcher implements Runnable {
             Chart chart = readChart(new File(chartFilePath), root);
             File ouptFile = new File(outputFilePath);
             if (!ouptFile.exists() && !ouptFile.createNewFile()) {
-                throw new CommandLine.PicocliException("Couldn't create new file");
+                throw new CommandLine.PicocliException("Couldn't create new file %s".formatted(ouptFile.getAbsolutePath()));
             }
             try (FileWriter writer = new FileWriter(outputFilePath)) {
                 if (includeValuesFile) {
@@ -81,20 +89,23 @@ public class Launcher implements Runnable {
                             "valuesFileName", yamlFile.getName(),
                             "valuesFileContent", Files.readString(Path.of(valuesFilePath))).render());
                 } else {
-                    writer.write(chartTemplate.data("chart", chart,"includeRaw", includeValuesFile).render());
+                    writer.write(chartTemplate.data("chart", chart, "includeRaw", includeValuesFile).render());
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CommandLine.PicocliException("An error occured while processing files: %s".formatted(e.getMessage()));
         }
     }
 
     private Chart readChart(File chartFile, Section rootSection) {
+        if (!chartFile.exists()) {
+            throw new CommandLine.PicocliException("Chart file could not be found: %s".formatted(chartFile.getAbsolutePath()));
+        }
         try (FileReader reader = new FileReader(chartFile)) {
             MappingNode rootNode = (MappingNode) new Yaml().compose(reader);
             return mapToChart(rootNode, rootSection);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new CommandLine.PicocliException("An error occured while reading chart file: %s".formatted(e.getMessage()));
         }
     }
 
@@ -105,5 +116,19 @@ public class Launcher implements Runnable {
             String arg = args.pop();
             argSpec.setValue(arg);
         }
+    }
+}
+
+@ApplicationScoped
+class PicocliCustomConfiguration {
+
+    @Produces
+    CommandLine customCommandLine(PicocliCommandLineFactory factory) {
+        return factory.create().setExecutionExceptionHandler((ex, cmd, fullParseResult) -> {
+            cmd.getErr().println(cmd.getColorScheme().errorText(ex.getMessage()));
+            return cmd.getExitCodeExceptionMapper() != null
+                    ? cmd.getExitCodeExceptionMapper().getExitCode(ex)
+                    : cmd.getCommandSpec().exitCodeOnExecutionException();
+        });
     }
 }
