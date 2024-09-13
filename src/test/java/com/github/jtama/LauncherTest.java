@@ -26,7 +26,7 @@ class LauncherTest {
         assertSoftly(softly -> {
             softly.assertThat(result.exitCode()).isGreaterThan(0);
             softly.assertThat(result.getErrorStream()).hasSizeGreaterThan(0);
-            softly.assertThat(result.getErrorStream().get(0)).contains("picocli.CommandLine$PicocliException: Values file is empty.");
+            softly.assertThat(result.getErrorStream().get(0)).contains("Values file is empty.");
         });
     }
 
@@ -37,7 +37,7 @@ class LauncherTest {
         assertSoftly(softly -> {
                     softly.assertThat(result.exitCode()).isGreaterThan(0);
                     softly.assertThat(result.getErrorStream()).hasSizeGreaterThan(0);
-                    softly.assertThat(result.getErrorStream().get(0)).contains("picocli.CommandLine$PicocliException: Chart file is empty.");
+                    softly.assertThat(result.getErrorStream().get(0)).contains("Chart file is empty.");
                 });
     }
 
