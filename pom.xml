@@ -34,7 +34,7 @@
         <jreleaser-plugin.version>1.3.0</jreleaser-plugin.version>
         <os-plugin.version>1.7.0</os-plugin.version>
         <skipITs>true</skipITs>
-        <surefire-plugin.version>3.2.5</surefire-plugin.version>
+        <surefire-plugin.version>3.5.0</surefire-plugin.version>
         <assembly-plugin.version>3.7.1</assembly-plugin.version>
         <exec.mainClass>com.example.Main</exec.mainClass>
         <executable-suffix/>
